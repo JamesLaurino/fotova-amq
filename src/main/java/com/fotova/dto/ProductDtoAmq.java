@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class ProductDto implements Serializable {
+public class ProductDtoAmq implements Serializable {
     private Integer id;
     private String name;
     private Integer quantity;

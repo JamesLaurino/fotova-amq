@@ -1,7 +1,7 @@
 package com.fotova.service;
 
 import com.fotova.config.RabbitMQConfig;
-import com.fotova.dto.ProductDto;
+import com.fotova.dto.ProductDtoAmq;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class RabbitMQProducer {
     private RabbitTemplate rabbitTemplate;
 
 
-    public void sendMessage(ProductDto productDto)
+    public void sendMessage(ProductDtoAmq productDto)
     {
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "routing.key.test", productDto);
         System.out.println("Message envoyé : " + productDto.toString());

@@ -1,7 +1,7 @@
 package com.fotova.service;
 
 import com.fotova.config.RabbitMQConfig;
-import com.fotova.dto.ProductDto;
+import com.fotova.dto.ProductDtoAmq;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
@@ -14,7 +14,7 @@ import java.io.IOException;
 public class RabbitMQConsumer
 {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME, ackMode = "MANUAL")
-    public void receiveMessage(ProductDto productDto, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag)
+    public void receiveMessage(ProductDtoAmq productDto, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag)
     {
         try {
             if(productDto.getName().equals("error")) {

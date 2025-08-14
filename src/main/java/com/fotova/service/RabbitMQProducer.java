@@ -1,6 +1,7 @@
 package com.fotova.service;
 
 import com.fotova.config.RabbitMQConfig;
+import com.fotova.dto.ContactDtoAmq;
 import com.fotova.service.email.EmailService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ public class RabbitMQProducer {
     @Autowired
     private EmailService emailService;
 
+    public void sendMessageFromContact(ContactDtoAmq contactDto)
+    {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "routing.key.test", contactDto);
+        emailService.sendEmailFromContact(contactDto);
+    }
 
     public void sendMessage(String orderId)
     {

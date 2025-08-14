@@ -1,5 +1,6 @@
 package com.fotova.service.email;
 
+import com.fotova.dto.ContactDtoAmq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +19,16 @@ public class EmailService {
         message.setSubject("Email send from Fotova-creation for register");
         message.setText("Click here : http://localhost:8080/api/v1/auth/register/check?uuid=" + uuid);
 
+        mailSender.send(message);
+    }
+
+    public void sendEmailFromContact(ContactDtoAmq contactDtoAmq) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(contactDtoAmq.getEmail());
+        message.setTo("fotova-creation@example.com");
+        message.setSubject(contactDtoAmq.getSujet());
+        message.setText("Venant de Monsieur " + contactDtoAmq.getNom() + ". " + contactDtoAmq.getMessage());
         mailSender.send(message);
     }
 

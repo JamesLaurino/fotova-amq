@@ -28,7 +28,7 @@ public class EmailService {
         message.setFrom(contactDtoAmq.getEmail());
         message.setTo("fotova-creation@example.com");
         message.setSubject(contactDtoAmq.getSujet());
-        message.setText("Venant de Monsieur " + contactDtoAmq.getNom() + ". " + contactDtoAmq.getMessage());
+        message.setText("Message en provenance du user : " + contactDtoAmq.getNom() + ".\n" + contactDtoAmq.getMessage());
         mailSender.send(message);
     }
 

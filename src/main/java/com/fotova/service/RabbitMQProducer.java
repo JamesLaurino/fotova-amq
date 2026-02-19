@@ -1,8 +1,10 @@
 package com.fotova.service;
 
 import com.fotova.config.RabbitMQConfig;
+import com.fotova.dto.BillingDetailDtoAmq;
 import com.fotova.dto.ContactDtoAmq;
 import com.fotova.service.email.EmailService;
+import jakarta.mail.MessagingException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,12 @@ public class RabbitMQProducer {
     {
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "routing.key.test", contactDto);
         emailService.sendEmailFromContact(contactDto);
+    }
+
+    public void sendBillingEmailMessage(BillingDetailDtoAmq billingDetailDtoAmq) throws MessagingException {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "routing.key.test", billingDetailDtoAmq.getUUID());
+        emailService.sendBillingEmailMessage(billingDetailDtoAmq);
+        System.out.println("An billing has been send by email to the user : " + billingDetailDtoAmq.getEmail());
     }
 
     public void sendMessage(String orderId)

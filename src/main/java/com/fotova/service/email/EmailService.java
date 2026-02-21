@@ -27,12 +27,22 @@ public class EmailService {
     @Value("${app.env.sender.email}")
     private String SENDER_EMAIL;;
 
-    public void sendRegisterEmail(String uuid) {
+    public void sendRegisterEmail(String uuid,String email) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@example.com");
-        message.setTo("destinataire@example.com");
+        message.setFrom(SENDER_EMAIL);
+        message.setTo(email);
         message.setSubject("Email send from Fotova-creation for register");
         message.setText("Click here : " + PROTOCOL + "://" + HOST + ":8080/api/v1/auth/register/check?uuid=" + uuid);
+
+        mailSender.send(message);
+    }
+
+    public void sendResetPassword(String email,String uuidToken) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(SENDER_EMAIL);
+        message.setTo(email);
+        message.setSubject("Email send from Fotova-creation for reset password");
+        message.setText("Click here to reset your password: " + PROTOCOL + "://" + HOST + ":8080/api/v1/auth/password-reset/check?uuid=" + uuidToken);
 
         mailSender.send(message);
     }
@@ -42,7 +52,7 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom("test@example.com");
+        helper.setFrom(SENDER_EMAIL);
         helper.setTo(billingDetailDtoAmq.getEmail());
         helper.setSubject("Congratulations and thank you for your order!");
 
@@ -122,11 +132,15 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    /*
+    * Mail for fotova in order to indicate that an order was made be someone
+    *
+    * */
     public void sendOrderEmail(String orderId) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@example.com");
-        message.setTo("destinataire@example.com");
+        message.setFrom(SENDER_EMAIL);
+        message.setTo(SENDER_EMAIL);
         message.setSubject("Email send from Fotova-creation application");
         message.setText("An order has been created with the number : " + orderId);
 

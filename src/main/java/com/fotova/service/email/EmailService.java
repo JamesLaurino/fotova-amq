@@ -7,10 +7,12 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class EmailService {
@@ -45,6 +47,19 @@ public class EmailService {
         message.setText("Click here to reset your password: " + PROTOCOL + "://" + HOST + ":8080/api/v1/auth/password-reset/check?uuid=" + uuidToken);
 
         mailSender.send(message);
+    }
+
+    public void sendEmailMarketing(Map<String,String> emailContent, String content) {
+
+        for (Map.Entry<String, String> entry : emailContent.entrySet()) {
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject("Email send from Fotova-creation for Marketing");
+            message.setFrom(SENDER_EMAIL);
+            message.setText(entry.getValue());
+            message.setTo(entry.getKey());
+            mailSender.send(message);
+        }
     }
 
     public void sendBillingEmailMessage(BillingDetailDtoAmq billingDetailDtoAmq) throws MessagingException {
